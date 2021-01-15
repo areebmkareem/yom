@@ -1,13 +1,16 @@
 import {createStore, combineReducers, compose, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import auth from './Reducers/Auth';
+import transactions from './Reducers/Transactions';
+import contacts from './Reducers/Contacts';
 import global from './Reducers/Global';
-
 import * as types from './actionTypes';
 
 const appReducer = combineReducers({
   auth,
   global,
+  transactions,
+  contacts,
 });
 
 let composeEnhancers = compose;

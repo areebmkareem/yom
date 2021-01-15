@@ -7,6 +7,8 @@ import {Host} from 'react-native-portalize';
 import Auth from '../Components/Auth';
 import Home from '../Components/Auth/Home';
 import Dashboard from '../Components/Dashboard';
+import Transactions from '../Components/Transactions';
+import TransactionDetails from '../Components/TransactionDetails';
 import normalize from '../Helper/normalize';
 import {getUserFetchState, getUserInfo} from '../Store/reduxSelectors';
 import {useSelector} from 'react-redux';
@@ -46,6 +48,24 @@ const PublicRoutes = () => (
 const PrivateRoutes = () => (
   <PrivateStack.Navigator>
     <PrivateStack.Screen
+      name="Transactions"
+      component={Transactions}
+      options={{
+        headerTitle: false,
+        headerTitle: 'Transactions',
+        headerTitleStyle: {
+          fontWeight: '700',
+          fontSize: normalize(4),
+        },
+        headerStyle: {
+          elevation: 0, // remove shadow on Android
+          shadowOpacity: 0, // remove shadow on iOS
+        },
+        headerRight: () => <HeaderRightButton />,
+        headerLeft: () => <HeaderLeftButton />,
+      }}
+    />
+    <PrivateStack.Screen
       name="Dashboard"
       component={Dashboard}
       options={{
@@ -53,7 +73,7 @@ const PrivateRoutes = () => (
         headerTitle: 'Statistics',
         headerTitleStyle: {
           fontWeight: '700',
-          fontSize: normalize(5),
+          fontSize: normalize(4),
         },
         headerStyle: {
           elevation: 0, // remove shadow on Android
@@ -63,6 +83,21 @@ const PrivateRoutes = () => (
         headerLeft: () => <HeaderLeftButton />,
       }}
       initialParams={{isLoginScreen: true}}
+    />
+    <PrivateStack.Screen
+      name="TransactionDetails"
+      component={TransactionDetails}
+      options={({route}) => ({
+        title: route.params.receiveDetails.fullName,
+        headerTitleStyle: {
+          fontWeight: '700',
+          fontSize: normalize(4),
+        },
+        headerStyle: {
+          elevation: 0, // remove shadow on Android
+          shadowOpacity: 0, // remove shadow on iOS
+        },
+      })}
     />
   </PrivateStack.Navigator>
 );
