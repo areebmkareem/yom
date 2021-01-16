@@ -8,6 +8,9 @@ import Auth from '../Components/Auth';
 import Home from '../Components/Auth/Home';
 import Dashboard from '../Components/Dashboard';
 import Transactions from '../Components/Transactions';
+import NewTransaction from '../Components/NewTransaction';
+import CreateTransaction from '../Components/NewTransaction/CreateTransaction';
+
 import TransactionDetails from '../Components/TransactionDetails';
 import normalize from '../Helper/normalize';
 import {getUserFetchState, getUserInfo} from '../Store/reduxSelectors';
@@ -19,6 +22,7 @@ import HeaderLeftButton from '../Components/Common/HeaderLeftButton';
 
 const PublicStack = createStackNavigator();
 const PrivateStack = createStackNavigator();
+const RootStack = createStackNavigator();
 
 const PublicRoutes = () => (
   <PublicStack.Navigator>
@@ -99,6 +103,21 @@ const PrivateRoutes = () => (
         },
       })}
     />
+    <PrivateStack.Screen
+      name="NewTransaction"
+      component={NewTransaction}
+      options={({route}) => ({
+        title: route.params.title,
+        headerTitleStyle: {
+          fontWeight: '700',
+          fontSize: normalize(4),
+        },
+        headerStyle: {
+          elevation: 0, // remove shadow on Android
+          shadowOpacity: 0, // remove shadow on iOS
+        },
+      })}
+    />
   </PrivateStack.Navigator>
 );
 
@@ -114,7 +133,39 @@ function Navigator() {
           <SplashScreen />
         ) : userInfo && userInfo._id ? (
           userInfo.isEmailVerified ? (
-            <PrivateRoutes />
+            <RootStack.Navigator
+              mode="modal"
+              screenOptions={{
+                headerShown: false,
+                cardStyle: {backgroundColor: 'transparent'},
+                cardOverlayEnabled: true,
+                cardStyleInterpolator: ({current: {progress}}) => ({
+                  cardStyle: {
+                    opacity: progress.interpolate({
+                      inputRange: [0, 0.5, 0.9, 1],
+                      outputRange: [0, 0.25, 0.7, 1],
+                    }),
+                  },
+                  overlayStyle: {
+                    opacity: progress.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0, 0.5],
+                      extrapolate: 'clamp',
+                    }),
+                  },
+                }),
+              }}>
+              <RootStack.Screen
+                name="Main"
+                component={PrivateRoutes}
+                options={{headerShown: false}}
+              />
+              <RootStack.Screen
+                name="MyModal"
+                component={CreateTransaction}
+                options={{headerShown: false}}
+              />
+            </RootStack.Navigator>
           ) : (
             <VerifyOtp />
           )

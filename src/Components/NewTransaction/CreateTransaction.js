@@ -9,50 +9,56 @@ import {
   Text,
   Dimensions,
   FlatList,
+  TextInput,
 } from 'react-native';
+import {Modalize} from 'react-native-modalize';
+
 import normalize from '../../Helper/normalize';
 import {useDispatch, useSelector} from 'react-redux';
-import {getUserTransactionContacts} from '../../Store/Actions/Contacts';
-import {getTransactionContacts} from '../../Store/reduxSelectors';
-import CustomButton from '../Common/CustomButton';
-const {width} = Dimensions.get('screen');
+import {searchContacts} from '../../Store/Actions/Contacts';
+import {getSearchedContacts} from '../../Store/reduxSelectors';
+const {width, height} = Dimensions.get('screen');
 const Transactions = ({route, navigation}) => {
+  const modalizeRef = React.useRef(null);
   const dispatch = useDispatch();
 
+  const searchedContacts = useSelector((state) => getSearchedContacts(state));
+
+  const handleSearchContacts = (userName) => {
+    dispatch(searchContacts(userName));
+  };
+
   React.useEffect(() => {
-    dispatch(getUserTransactionContacts());
+    modalizeRef.current?.open();
   }, []);
 
-  const transactionContacts = useSelector((state) =>
-    getTransactionContacts(state),
-  );
-
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        position: 'relative',
-        backgroundColor: '#fff',
-        position: 'relative',
-      }}>
-      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-      <View style={{padding: 10}}>
-        <FlatList
+    <Modalize
+      ref={modalizeRef}
+      adjustToContentHeight={true}
+      onClose={() => navigation.goBack()}>
+      <View style={{height: height / 2, backgroundColor: 'yellow'}}>
+        {/* <FlatList
           ListHeaderComponent={() => {
             return (
               <View
                 style={{
-                  minHeight: 50,
+                  maxHeight: 50,
                   backgroundColor: '#eee',
                   borderRadius: 20,
                   justifyContent: 'center',
                   padding: 10,
                 }}>
-                <Text>Search Section</Text>
+                <TextInput
+                  onEndEditing={(value) =>
+                    handleSearchContacts(value.nativeEvent.text)
+                  }
+                  style={{height: 50}}
+                />
               </View>
             );
           }}
-          data={transactionContacts.contacts}
+          data={searchedContacts.contacts}
           numColumns={3}
           keyExtractor={(item) => item._id}
           renderItem={({item}) => (
@@ -63,25 +69,10 @@ const Transactions = ({route, navigation}) => {
               }
             />
           )}
-        />
+        /> */}
       </View>
-
-      <View
-        style={{
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          bottom: 30,
-          padding: 10,
-        }}>
-        <CustomButton
-          onPress={() =>
-            navigation.push('NewTransaction', {title: 'New Transaction'})
-          }
-          title="New Payment"
-        />
-      </View>
-    </SafeAreaView>
+    </Modalize>
+    // </View>
   );
 };
 

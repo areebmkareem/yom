@@ -10,6 +10,22 @@ export const getUserTransactionContacts = () => async (dispatch) => {
       payload: response.data,
     });
   } catch (error) {
+    alert(JSON.stringify(error));
+    // return {error: true, ...error};
+  }
+};
+
+export const searchContacts = (userName) => async (dispatch) => {
+  try {
+    const response = await getFetchAPI(`/contacts/${userName}`);
+    console.log('response: ', response);
+    if (response.error) throw response;
+    dispatch({
+      type: types.SEARCH_CONTACTS_SUCCESS,
+      payload: response.data,
+    });
+  } catch (error) {
+    alert(JSON.stringify(error));
     // return {error: true, ...error};
   }
 };

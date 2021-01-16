@@ -2,6 +2,7 @@ import * as types from '../actionTypes';
 
 const initialState = {
   transactionContacts: {},
+  searchedContacts: {},
 };
 
 export default (state = initialState, action) => {
@@ -10,6 +11,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         transactionContacts: action.payload,
+      };
+    case types.SEARCH_CONTACTS_SUCCESS:
+      return {
+        ...state,
+        searchedContacts: action.payload,
       };
     default:
       return state;
