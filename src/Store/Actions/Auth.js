@@ -1,4 +1,3 @@
-import {BASE_URL} from '../../Config';
 import Snackbar from 'react-native-snackbar';
 import {
   ASYNC_STORAGE_KEYS,
@@ -81,7 +80,7 @@ export const logout = (payload) => async (dispatch) => {
 export const signUpUserWithCredentials = (payload) => async (dispatch) => {
   try {
     const response = await postFetchAPI('/register', payload);
-    console.log('response: ', response);
+
     if (response.error) throw response;
     const data = response.data;
     await storeData(ASYNC_STORAGE_KEYS.authToken, data.token);
