@@ -16,13 +16,18 @@ const Auth = ({route, navigation}) => {
     <SafeAreaView
       style={{
         flex: 1,
-        paddingHorizontal: 20,
-        paddingTop: isLoginScreen ? 56 : 0,
+
         paddingBottom: 30,
         backgroundColor: '#fff',
       }}>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-      <Animatable.View animation={'fadeIn'} style={{flex: 1}}>
+      <Animatable.View
+        animation={'fadeIn'}
+        style={{
+          flex: 1,
+          paddingHorizontal: 20,
+          paddingTop: isLoginScreen ? 56 : 0,
+        }}>
         <AuthHeader isLoginScreen={isLoginScreen} />
         {isLoginScreen ? (
           <Login navigation={navigation} />

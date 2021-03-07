@@ -19,6 +19,7 @@ import SplashScreen from '../Components/Common/SplashScreen';
 import VerifyOtp from '../Components/VerifyOtp';
 import HeaderRightButton from '../Components/Common/HeaderRightButton';
 import HeaderLeftButton from '../Components/Common/HeaderLeftButton';
+import CreateBill from '../Components/CreateBill';
 
 const PublicStack = createStackNavigator();
 const PrivateStack = createStackNavigator();
@@ -53,7 +54,7 @@ const PrivateRoutes = () => (
   <PrivateStack.Navigator>
     <PrivateStack.Screen
       name="Transactions"
-      component={Transactions}
+      component={CreateBill}
       options={{
         headerTitle: false,
         headerTitle: 'Transactions',

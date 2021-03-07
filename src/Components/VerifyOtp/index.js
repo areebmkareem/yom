@@ -56,7 +56,7 @@ const VerifyOtp = () => {
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.container}>
-          <Animatable.View animation={'fadeIn'} style={{flex: 1}}>
+          <Animatable.View animation={'fadeIn'} style={{flex: 1, padding: 20}}>
             <View style={{flex: 1, alignItems: 'center'}}>
               <Text
                 style={{

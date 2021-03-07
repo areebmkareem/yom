@@ -3,7 +3,8 @@ import Navigator from './src/Navigator';
 import {useDispatch} from 'react-redux';
 import {getUserInfo, setUserInfo} from './src/Store/Actions/Auth';
 import {ASYNC_STORAGE_KEYS, getData} from './src/Helper/asyncStorage';
-
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {ThemeProvider} from 'react-native-elements';
 function App() {
   const dispatch = useDispatch();
 
@@ -17,7 +18,13 @@ function App() {
     else dispatch(setUserInfo({}));
   };
 
-  return <Navigator />;
+  return (
+    <SafeAreaProvider>
+      <ThemeProvider>
+        <Navigator />
+      </ThemeProvider>
+    </SafeAreaProvider>
+  );
 }
 
 export default App;
