@@ -1,11 +1,13 @@
 import React from 'react';
-import {View, Text, LayoutAnimation, Dimensions, NativeModules} from 'react-native';
+import {View, Text, LayoutAnimation, Dimensions, NativeModules, SafeAreaView} from 'react-native';
 import {Button, Input, CheckBox} from 'react-native-elements';
 import {useForm, Controller} from 'react-hook-form';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch} from 'react-redux';
 import {createInvoice} from '../../Store/Actions/Invoice';
+import normalize from '../../Helper/normalize';
+import CustomButton from '../Common/CustomButton';
 Icon.loadFont();
 
 const errorMessage = 'This Field Required.';
@@ -94,61 +96,70 @@ const CreateBill = () => {
   });
 
   return (
-    <KeyboardAwareScrollView showsHorizontalScrollIndicator={false} contentContainerStyle={{flex: 1}}>
-      <View style={{flex: 1, backgroundColor: '#fff', padding: 10}}>
-        <View>
-          <Controller control={control} render={({onChange, onBlur, value}) => <Input leftIcon={{type: 'font-awesome', name: 'clock-o'}} label="Total Hours" placeholder="Enter Total Hours" value={value} onChangeText={onChange} keyboardType="decimal-pad" errorMessage={errors.totalHours && errorMessage} />} name="totalHours" rules={{required: true, valueAsNumber: true}} />
-
-          <Controller control={control} render={({onChange, onBlur, value}) => <Input label="Per Hour Charge" leftIcon={{type: 'font-awesome', name: 'usd'}} placeholder="Enter Dollar Per Hour" value={value} onChangeText={onChange} keyboardType="decimal-pad" errorMessage={errors.perHourCharge && errorMessage} />} name="perHourCharge" rules={{required: true, valueAsNumber: true}} />
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-            }}>
-            <View style={{flex: 1}}>
-              <Controller control={control} render={({onChange, onBlur, value}) => <Input label="Subotal" leftIcon={{type: 'font-awesome', name: 'usd'}} value={value} onChangeText={onChange} keyboardType="decimal-pad" errorMessage={errors.perHourCharge && errorMessage} />} name="subtotal" rules={{required: true, valueAsNumber: true}} />
-            </View>
-            <View style={{flex: 1}}>
-              <Controller control={control} render={({onChange, onBlur, value}) => <Input label="  " leftIcon={{type: 'font-awesome', name: 'inr'}} value={value} onChangeText={onChange} keyboardType="decimal-pad" errorMessage={errors.perHourCharge && errorMessage} />} name="subTotalInr" rules={{required: true, valueAsNumber: true}} />
-            </View>
-          </View>
-          <Controller control={control} render={({onChange, onBlur, value}) => <Input label="Credited To Account" leftIcon={{type: 'font-awesome', name: 'inr'}} placeholder="Enter Amount Credited To Account" value={value} onChangeText={onChange} keyboardType="decimal-pad" errorMessage={errors.perHourCharge && errorMessage} />} name="creditedToAccount" rules={{required: true, valueAsNumber: true}} />
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-            }}>
-            <View style={{flex: 2}}>
-              <Controller control={control} render={({onChange, onBlur, value}) => <Input label="Tax (Sub Total - Credited)" leftIcon={{type: 'font-awesome', name: 'inr'}} placeholder="Tax Deducted From Sub Total" value={value} onChangeText={onChange} keyboardType="decimal-pad" errorMessage={errors.perHourCharge && errorMessage} />} name="tax" rules={{required: true, valueAsNumber: true}} />
-            </View>
-            <View style={{flex: 1}}>
-              <Controller control={control} render={({onChange, onBlur, value}) => <Input label="   " leftIcon={{type: 'font-awesome', name: 'percent'}} value={value} onChangeText={onChange} keyboardType="decimal-pad" errorMessage={errors.perHourCharge && errorMessage} />} name="taxInPercentage" rules={{required: true, valueAsNumber: true}} />
-            </View>
-          </View>
-
-          <Controller control={control} render={({onChange, onBlur, value}) => <CheckBox title="Deduct Commission" checkedIcon="dot-circle-o" uncheckedIcon="circle-o" checked={value} onPress={() => onChange(!value)} />} name="hasCommission" />
-          {watchFields.hasCommission && (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                paddingTop: 25,
-              }}>
-              <View style={{flex: 1}}>
-                <Controller control={control} render={({onChange, onBlur, value}) => <Input label="Commission" leftIcon={{type: 'font-awesome', name: 'percent'}} value={value} onChangeText={onChange} keyboardType="decimal-pad" errorMessage={errors.perHourCharge && errorMessage} />} name="commission" rules={{required: true, valueAsNumber: true}} />
-              </View>
-              <View style={{flex: 2}}>
-                <Controller control={control} render={({onChange, onBlur, value}) => <Input label="(Credited To Acc - Tax)" leftIcon={{type: 'font-awesome', name: 'inr'}} placeholder="Tax Deducted From Sub Total" value={value} onChangeText={onChange} keyboardType="decimal-pad" errorMessage={errors.perHourCharge && errorMessage} />} name="commissionInInr" rules={{required: true, valueAsNumber: true}} />
-              </View>
-            </View>
-          )}
-          <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+    <View style={{flex: 1, backgroundColor: '#fff'}}>
+      <SafeAreaView style={{flex: 1, position: 'relative'}}>
+        <View style={{padding: 20}}>
+          <Text style={{fontWeight: 'bold', color: '#696969', fontSize: normalize(8)}}>Create Invoice</Text>
         </View>
-      </View>
-    </KeyboardAwareScrollView>
+        <KeyboardAwareScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom: 100}}>
+          <View style={{flex: 1, backgroundColor: '#fff', padding: 10}}>
+            <View>
+              <Controller control={control} render={({onChange, onBlur, value}) => <Input leftIcon={{type: 'font-awesome', name: 'clock-o'}} label="Total Hours" placeholder="Enter Total Hours" value={value} onChangeText={onChange} keyboardType="decimal-pad" errorMessage={errors.totalHours && errorMessage} />} name="totalHours" rules={{required: true, valueAsNumber: true}} />
+
+              <Controller control={control} render={({onChange, onBlur, value}) => <Input label="Per Hour Charge" leftIcon={{type: 'font-awesome', name: 'usd'}} placeholder="Enter Dollar Per Hour" value={value} onChangeText={onChange} keyboardType="decimal-pad" errorMessage={errors.perHourCharge && errorMessage} />} name="perHourCharge" rules={{required: true, valueAsNumber: true}} />
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                }}>
+                <View style={{flex: 1}}>
+                  <Controller control={control} render={({onChange, onBlur, value}) => <Input label="Subotal" leftIcon={{type: 'font-awesome', name: 'usd'}} value={value} onChangeText={onChange} keyboardType="decimal-pad" errorMessage={errors.perHourCharge && errorMessage} />} name="subtotal" rules={{required: true, valueAsNumber: true}} />
+                </View>
+                <View style={{flex: 1}}>
+                  <Controller control={control} render={({onChange, onBlur, value}) => <Input label="  " leftIcon={{type: 'font-awesome', name: 'inr'}} value={value} onChangeText={onChange} keyboardType="decimal-pad" errorMessage={errors.perHourCharge && errorMessage} />} name="subTotalInr" rules={{required: true, valueAsNumber: true}} />
+                </View>
+              </View>
+              <Controller control={control} render={({onChange, onBlur, value}) => <Input label="Credited To Account" leftIcon={{type: 'font-awesome', name: 'inr'}} placeholder="Enter Amount Credited To Account" value={value} onChangeText={onChange} keyboardType="decimal-pad" errorMessage={errors.perHourCharge && errorMessage} />} name="creditedToAccount" rules={{required: true, valueAsNumber: true}} />
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                }}>
+                <View style={{flex: 2}}>
+                  <Controller control={control} render={({onChange, onBlur, value}) => <Input label="Tax (Sub Total - Credited)" leftIcon={{type: 'font-awesome', name: 'inr'}} placeholder="Tax Deducted From Sub Total" value={value} onChangeText={onChange} keyboardType="decimal-pad" errorMessage={errors.perHourCharge && errorMessage} />} name="tax" rules={{required: true, valueAsNumber: true}} />
+                </View>
+                <View style={{flex: 1}}>
+                  <Controller control={control} render={({onChange, onBlur, value}) => <Input label="   " leftIcon={{type: 'font-awesome', name: 'percent'}} value={value} onChangeText={onChange} keyboardType="decimal-pad" errorMessage={errors.perHourCharge && errorMessage} />} name="taxInPercentage" rules={{required: true, valueAsNumber: true}} />
+                </View>
+              </View>
+
+              <Controller control={control} render={({onChange, onBlur, value}) => <CheckBox title="Deduct Commission" checkedIcon="dot-circle-o" uncheckedIcon="circle-o" checked={value} onPress={() => onChange(!value)} />} name="hasCommission" />
+              {watchFields.hasCommission && (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    paddingTop: 25,
+                  }}>
+                  <View style={{flex: 1}}>
+                    <Controller control={control} render={({onChange, onBlur, value}) => <Input label="Commission" leftIcon={{type: 'font-awesome', name: 'percent'}} value={value} onChangeText={onChange} keyboardType="decimal-pad" errorMessage={errors.perHourCharge && errorMessage} />} name="commission" rules={{required: true, valueAsNumber: true}} />
+                  </View>
+                  <View style={{flex: 2}}>
+                    <Controller control={control} render={({onChange, onBlur, value}) => <Input label="(Credited To Acc - Tax)" leftIcon={{type: 'font-awesome', name: 'inr'}} placeholder="Tax Deducted From Sub Total" value={value} onChangeText={onChange} keyboardType="decimal-pad" errorMessage={errors.perHourCharge && errorMessage} />} name="commissionInInr" rules={{required: true, valueAsNumber: true}} />
+                  </View>
+                </View>
+              )}
+            </View>
+          </View>
+        </KeyboardAwareScrollView>
+        <View style={{position: 'absolute', left: 0, right: 0, bottom: 50, padding: 20}}>
+          <CustomButton title="Create" onPress={handleSubmit(onSubmit)} />
+        </View>
+      </SafeAreaView>
+    </View>
   );
 };
 

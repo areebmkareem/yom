@@ -21,6 +21,7 @@ import HeaderRightButton from '../Components/Common/HeaderRightButton';
 import HeaderLeftButton from '../Components/Common/HeaderLeftButton';
 import CreateBill from '../Components/CreateBill';
 import InvoiceList from '../Components/InvoiceList';
+import InvoiceDetails from '../Components/InvoiceDetails';
 const PublicStack = createStackNavigator();
 const PrivateStack = createStackNavigator();
 const RootStack = createStackNavigator();
@@ -53,11 +54,11 @@ const PublicRoutes = () => (
 const PrivateRoutes = () => (
   <PrivateStack.Navigator>
     <PrivateStack.Screen
-      name="Transactions"
+      name="InvoiceList"
       component={InvoiceList}
       options={{
         headerTitle: false,
-        headerTitle: 'Transactions',
+        headerTitle: 'Invoices',
         headerTitleStyle: {
           fontWeight: '700',
           fontSize: normalize(4),
@@ -69,6 +70,17 @@ const PrivateRoutes = () => (
         headerRight: () => <HeaderRightButton />,
         headerLeft: () => <HeaderLeftButton />,
       }}
+    />
+    <PrivateStack.Screen
+      name="InvoiceDetails"
+      options={{
+        headerTitle: false,
+        headerStyle: {
+          elevation: 0, // remove shadow on Android
+          shadowOpacity: 0, // remove shadow on iOS
+        },
+      }}
+      component={InvoiceDetails}
     />
     <PrivateStack.Screen
       name="Dashboard"
@@ -157,7 +169,7 @@ function Navigator() {
                 }),
               }}>
               <RootStack.Screen name="Main" component={PrivateRoutes} options={{headerShown: false}} />
-              <RootStack.Screen name="MyModal" component={CreateTransaction} options={{headerShown: false}} />
+              <RootStack.Screen name="CreateInvoice" component={CreateBill} />
             </RootStack.Navigator>
           ) : (
             <VerifyOtp />
