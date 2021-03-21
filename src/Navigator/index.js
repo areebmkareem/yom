@@ -20,7 +20,7 @@ import VerifyOtp from '../Components/VerifyOtp';
 import HeaderRightButton from '../Components/Common/HeaderRightButton';
 import HeaderLeftButton from '../Components/Common/HeaderLeftButton';
 import CreateBill from '../Components/CreateBill';
-
+import InvoiceList from '../Components/InvoiceList';
 const PublicStack = createStackNavigator();
 const PrivateStack = createStackNavigator();
 const RootStack = createStackNavigator();
@@ -54,7 +54,7 @@ const PrivateRoutes = () => (
   <PrivateStack.Navigator>
     <PrivateStack.Screen
       name="Transactions"
-      component={CreateBill}
+      component={InvoiceList}
       options={{
         headerTitle: false,
         headerTitle: 'Transactions',
@@ -156,16 +156,8 @@ function Navigator() {
                   },
                 }),
               }}>
-              <RootStack.Screen
-                name="Main"
-                component={PrivateRoutes}
-                options={{headerShown: false}}
-              />
-              <RootStack.Screen
-                name="MyModal"
-                component={CreateTransaction}
-                options={{headerShown: false}}
-              />
+              <RootStack.Screen name="Main" component={PrivateRoutes} options={{headerShown: false}} />
+              <RootStack.Screen name="MyModal" component={CreateTransaction} options={{headerShown: false}} />
             </RootStack.Navigator>
           ) : (
             <VerifyOtp />
