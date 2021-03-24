@@ -17,7 +17,7 @@ const {UIManager} = NativeModules;
 
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
-const CreateBill = () => {
+const CreateBill = ({navigation}) => {
   const dispatch = useDispatch();
 
   const {control, handleSubmit, getValues, errors, watch, setValue, register} = useForm({
@@ -56,8 +56,10 @@ const CreateBill = () => {
     setValue('commissionInInr', String((((creditedToAccount - tax) / 100) * commission).toFixed(2)));
   }, [watchFields.commission]);
 
-  const onSubmit = (data) => {
-    dispatch(createInvoice(data));
+  const onSubmit = async (data) => {
+    try {
+      await dispatch(createInvoice(data));
+    } catch (err) {}
   };
 
   const getExchangeRate = async () => {
@@ -98,7 +100,13 @@ const CreateBill = () => {
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <SafeAreaView style={{flex: 1, position: 'relative'}}>
-        <View style={{padding: 20}}>
+        <View style={{backgroundColor: '#fff', paddingHorizontal: 5, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+          <Button onPress={() => navigation.goBack()} containerStyle={{borderRadius: 100}} icon={<Icon name="arrow-left" size={15} color="#000000" />} type="clear" titleStyle={{color: '#000000'}} />
+
+          <Button title="Save" type="clear" titleStyle={{color: '#000000'}} onPress={handleSubmit(onSubmit)} />
+        </View>
+
+        <View style={{paddingHorizontal: 20}}>
           <Text style={{fontWeight: 'bold', color: '#696969', fontSize: normalize(8)}}>Create Invoice</Text>
         </View>
         <KeyboardAwareScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom: 100}}>
@@ -135,7 +143,7 @@ const CreateBill = () => {
                 </View>
               </View>
 
-              <Controller control={control} render={({onChange, onBlur, value}) => <CheckBox title="Deduct Commission" checkedIcon="dot-circle-o" uncheckedIcon="circle-o" checked={value} onPress={() => onChange(!value)} />} name="hasCommission" />
+              <Controller control={control} render={({onChange, onBlur, value}) => <CheckBox checkedColor="black" title="Deduct Commission" checkedIcon="dot-circle-o" uncheckedIcon="circle-o" checked={value} onPress={() => onChange(!value)} />} name="hasCommission" />
               {watchFields.hasCommission && (
                 <View
                   style={{
@@ -155,9 +163,9 @@ const CreateBill = () => {
             </View>
           </View>
         </KeyboardAwareScrollView>
-        <View style={{position: 'absolute', left: 0, right: 0, bottom: 50, padding: 20}}>
+        {/* <View >
           <CustomButton title="Create" onPress={handleSubmit(onSubmit)} />
-        </View>
+        </View> */}
       </SafeAreaView>
     </View>
   );

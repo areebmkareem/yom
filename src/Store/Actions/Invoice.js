@@ -1,22 +1,31 @@
 import {getFetchAPI, postFetchAPI} from '../../Helper/fetchAPI';
 import * as types from '../actionTypes';
+import {getInvoiceList} from '../reduxSelectors';
 
-export const createInvoice = (payload) => async (dispatch) => {
+export const createInvoice = (payload) => async (dispatch, useState) => {
   try {
-    const response = await postFetchAPI('/invoice', payload);
+    const state = useState();
+    let data = {...getInvoiceList(state)};
 
+    let invoices = [...data.payload];
+    let totalCount = invoices.length + 1;
+
+    const response = await postFetchAPI('/invoice', payload);
     if (response.error) throw response;
-    // dispatch({
-    //   type: types.TRANSACTION_CONTACTS_SUCCESS,
-    //   payload: response.data,
-    // });
+    invoices.push(response.data);
+    data.payload = invoices;
+    data.totalCount = totalCount;
+    dispatch({
+      type: types.GET_INVOICES,
+      payload: response.data,
+    });
+    return Promise.resolve();
   } catch (error) {
-    alert(JSON.stringify(error));
-    // return {error: true, ...error};
+    return Promise.reject();
   }
 };
 
-export const getInvoices = () => async (dispatch) => {
+export const getInvoices = () => async (dispatch, useStore) => {
   try {
     const response = await getFetchAPI('/invoice');
     if (response.error) throw response;
