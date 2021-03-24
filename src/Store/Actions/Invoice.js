@@ -24,8 +24,9 @@ export const getInvoices = () => async (dispatch) => {
       type: types.GET_INVOICES,
       payload: response.data,
     });
+    return Promise.resolve();
   } catch (error) {
-    alert(JSON.stringify(error));
+    return Promise.reject(JSON.stringify(error));
     // return {error: true, ...error};
   }
 };

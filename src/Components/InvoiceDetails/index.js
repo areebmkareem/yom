@@ -11,10 +11,10 @@ import normalize from '../../Helper/normalize';
 
 Icon.loadFont();
 
-const ItemView = ({label, value}) => (
+const ItemView = ({label, value, textStyles = {}}) => (
   <View style={{justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', paddingBottom: 20}}>
-    <Text style={{fontSize: normalize(2.5), fontWeight: 'bold'}}>{label}</Text>
-    <Text style={{fontSize: normalize(2.5), fontWeight: 'bold'}}>{value}</Text>
+    <Text style={[{fontSize: normalize(2), fontWeight: 'bold'}, textStyles]}>{label}</Text>
+    <Text style={[{fontSize: normalize(2), fontWeight: 'bold'}, textStyles]}>{value}</Text>
   </View>
 );
 
@@ -47,8 +47,29 @@ const InvoiceDetails = ({route}) => {
           <ItemView label="Subtotal" value={`₹${item.subTotalInr} ($${item.subtotal})`} />
         </View>
         <View style={{paddingVertical: 20}}>
-          <ItemView label="Tax" value={`₹${item.tax}(${item.taxInPercentage}%)`} />
-          <ItemView label="Commission" value={`₹${item.commissionInInr}(${item.commission}%)`} />
+          <ItemView
+            textStyles={{
+              color: '#696969',
+            }}
+            label="Tax"
+            value={`₹${item.tax}(${item.taxInPercentage}%)`}
+          />
+          <ItemView
+            textStyles={{
+              color: '#696969',
+            }}
+            label="Commission"
+            value={`₹${item.commissionInInr || 0}(${item.commission || 0}%)`}
+          />
+        </View>
+        <View>
+          <ItemView
+            textStyles={{
+              fontSize: normalize(2.5),
+            }}
+            label="Total"
+            value={`₹${item.subTotalInr - (item.tax || 0 + item.commissionInInr || 0)}`}
+          />
         </View>
       </ScrollView>
     </View>
