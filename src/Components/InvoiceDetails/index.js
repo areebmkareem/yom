@@ -29,8 +29,7 @@ const InvoiceDetails = ({route}) => {
     <View style={{flex: 1, backgroundColor: '#fff', padding: 20}}>
       <ScrollView bounces={false} showsHorizontalScrollIndicator={false}>
         <View>
-          <Text style={{fontWeight: 'bold', color: '#696969', fontSize: normalize(8)}}>{dayjs(item.createdAt).format('DD MMM YY')}</Text>
-          <Text style={{fontWeight: 'bold', color: '#696969', fontSize: normalize(4)}}>{dayjs(item.createdAt).format('hh:mm A')}</Text>
+          <Text style={{fontWeight: 'bold', color: '#696969', fontSize: normalize(8)}}>{dayjs(item.billingDate).format('DD MMM YY')}</Text>
         </View>
 
         <View style={{paddingVertical: 50, justifyContent: 'center'}}>

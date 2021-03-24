@@ -60,12 +60,6 @@ const CreateBill = ({navigation}) => {
     setValue('commissionInInr', String((((creditedToAccount - tax) / 100) * commission).toFixed(2)));
   }, [watchFields.commission]);
 
-  const onSubmit = async (data) => {
-    try {
-      await dispatch(createInvoice(data));
-    } catch (err) {}
-  };
-
   const getExchangeRate = async () => {
     const response = await fetch(`https://free.currconv.com/api/v7/convert?q=USD_INR&compact=ultra&apiKey=ca8a685f3cc79423a0a0`);
     const data = await response.json();
@@ -102,14 +96,34 @@ const CreateBill = ({navigation}) => {
   });
 
   const [showDatePicker, setShowDatePicker] = React.useState(false);
+  const [isLoading, setIsloading] = React.useState(false);
+  const onSubmit = async (data) => {
+    try {
+      setIsloading(true);
+      await dispatch(createInvoice(data));
+      setIsloading(false);
+      navigation.goBack();
+    } catch (err) {
+      setIsloading(false);
+    }
+  };
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <SafeAreaView style={{flex: 1, position: 'relative'}}>
         <View style={{backgroundColor: '#fff', paddingHorizontal: 5, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-          <Button onPress={() => navigation.goBack()} containerStyle={{borderRadius: 100}} icon={<Icon name="arrow-left" size={15} color="#000000" />} type="clear" titleStyle={{color: '#000000'}} />
+          <Button disabled={isLoading} onPress={() => navigation.goBack()} containerStyle={{borderRadius: 100}} icon={<Icon name="arrow-left" size={15} color="#000000" />} type="clear" titleStyle={{color: '#000000'}} />
 
-          <Button title="Save" type="clear" titleStyle={{color: '#000000'}} onPress={handleSubmit(onSubmit)} />
+          <Button
+            loading={isLoading}
+            loadingProps={{
+              color: '#000000',
+            }}
+            title="Save"
+            type="clear"
+            titleStyle={{color: '#000000'}}
+            onPress={handleSubmit(onSubmit)}
+          />
         </View>
 
         <View style={{paddingHorizontal: 20}}>
