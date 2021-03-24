@@ -1,13 +1,14 @@
 import React from 'react';
-import {View, Text, LayoutAnimation, Dimensions, NativeModules, SafeAreaView} from 'react-native';
+import {View, Text, LayoutAnimation, Dimensions, NativeModules, SafeAreaView, TouchableOpacity} from 'react-native';
 import {Button, Input, CheckBox} from 'react-native-elements';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import dayjs from 'dayjs';
 import {useForm, Controller} from 'react-hook-form';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch} from 'react-redux';
 import {createInvoice} from '../../Store/Actions/Invoice';
 import normalize from '../../Helper/normalize';
-import CustomButton from '../Common/CustomButton';
 Icon.loadFont();
 
 const errorMessage = 'This Field Required.';
@@ -34,14 +35,17 @@ const CreateBill = ({navigation}) => {
       commissionInInr: '',
       commission: '',
       currentDollarRate: '',
+      billingDate: '',
     },
   });
 
   React.useEffect(() => {
     register('currentDollarRate');
+    register('billingDate');
   }, [register]);
 
-  const watchFields = watch(['totalHours', 'perHourCharge', 'creditedToAccount', 'hasCommission', 'commission']);
+  const watchFields = watch(['totalHours', 'perHourCharge', 'creditedToAccount', 'hasCommission', 'commission', 'billingDate']);
+  console.log('watchFields: ', watchFields);
 
   React.useEffect(() => {
     calculateSubTotal();
@@ -97,6 +101,8 @@ const CreateBill = ({navigation}) => {
     LayoutAnimation.easeInEaseOut();
   });
 
+  const [showDatePicker, setShowDatePicker] = React.useState(false);
+
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <SafeAreaView style={{flex: 1, position: 'relative'}}>
@@ -112,6 +118,25 @@ const CreateBill = ({navigation}) => {
         <KeyboardAwareScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom: 100}}>
           <View style={{flex: 1, backgroundColor: '#fff', padding: 10}}>
             <View>
+              <>
+                <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+                  <Input editable={false} leftIcon={{type: 'font-awesome', name: 'calendar'}} label="Date" placeholder="Enter Billing Date" value={watchFields && watchFields.billingDate ? dayjs(watchFields && watchFields.billingDate).format('DD MMM YY ') : ''} keyboardType="decimal-pad" errorMessage={errors.billingDate && errorMessage} />
+                </TouchableOpacity>
+                {showDatePicker && (
+                  <DateTimePicker
+                    onTouchCancel={() => setShowDatePicker(false)}
+                    testID="dateTimePicker"
+                    value={(watchFields && watchFields.billingDate) || new Date()}
+                    mode={'date'}
+                    display="default"
+                    onChange={(event, selectedDate) => {
+                      setValue('billingDate', selectedDate);
+                      setShowDatePicker(false);
+                    }}
+                  />
+                )}
+              </>
+
               <Controller control={control} render={({onChange, onBlur, value}) => <Input leftIcon={{type: 'font-awesome', name: 'clock-o'}} label="Total Hours" placeholder="Enter Total Hours" value={value} onChangeText={onChange} keyboardType="decimal-pad" errorMessage={errors.totalHours && errorMessage} />} name="totalHours" rules={{required: true, valueAsNumber: true}} />
 
               <Controller control={control} render={({onChange, onBlur, value}) => <Input label="Per Hour Charge" leftIcon={{type: 'font-awesome', name: 'usd'}} placeholder="Enter Dollar Per Hour" value={value} onChangeText={onChange} keyboardType="decimal-pad" errorMessage={errors.perHourCharge && errorMessage} />} name="perHourCharge" rules={{required: true, valueAsNumber: true}} />
