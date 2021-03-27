@@ -22,6 +22,7 @@ import HeaderLeftButton from '../Components/Common/HeaderLeftButton';
 import CreateBill from '../Components/CreateBill';
 import InvoiceList from '../Components/InvoiceList';
 import InvoiceDetails from '../Components/InvoiceDetails';
+import SendToUsers from '../Components/SendToUsers';
 const PublicStack = createStackNavigator();
 const PrivateStack = createStackNavigator();
 const RootStack = createStackNavigator();
@@ -125,6 +126,17 @@ const PrivateRoutes = () => (
           fontWeight: '700',
           fontSize: normalize(4),
         },
+        headerStyle: {
+          elevation: 0, // remove shadow on Android
+          shadowOpacity: 0, // remove shadow on iOS
+        },
+      })}
+    />
+    <RootStack.Screen
+      name="SendToUsers"
+      component={SendToUsers}
+      options={({route}) => ({
+        title: '',
         headerStyle: {
           elevation: 0, // remove shadow on Android
           shadowOpacity: 0, // remove shadow on iOS

@@ -18,12 +18,16 @@ const ItemView = ({label, value, textStyles = {}}) => (
   </View>
 );
 
-const InvoiceDetails = ({route}) => {
+const InvoiceDetails = ({route, navigation}) => {
   const dispatch = useDispatch();
   const params = route && route.params;
   const {item} = params;
 
-  React.useEffect(() => {}, []);
+  React.useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <Button onPress={() => navigation.push('SendToUsers', {item})} title="CONTINUE" color="black" type="clear" />,
+    });
+  }, [navigation]);
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff', padding: 20}}>

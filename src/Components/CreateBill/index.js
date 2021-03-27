@@ -35,7 +35,7 @@ const CreateBill = ({navigation}) => {
       commissionInInr: '',
       commission: '',
       currentDollarRate: '',
-      billingDate: '',
+      billingDate: new Date(),
     },
   });
 

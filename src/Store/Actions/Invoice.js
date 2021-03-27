@@ -39,3 +39,15 @@ export const getInvoices = () => async (dispatch, useStore) => {
     // return {error: true, ...error};
   }
 };
+
+export const sendInvoice = (payload) => async (dispatch, useStore) => {
+  console.log('payload: ', payload);
+  try {
+    const response = await postFetchAPI('/invoice-send', payload);
+    if (response.error) throw response;
+    return Promise.resolve();
+  } catch (error) {
+    return Promise.reject(JSON.stringify(error));
+    // return {error: true, ...error};
+  }
+};
