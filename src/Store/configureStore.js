@@ -5,6 +5,8 @@ import transactions from './Reducers/Transactions';
 import contacts from './Reducers/Contacts';
 import global from './Reducers/Global';
 import invoice from './Reducers/Invoice';
+import statics from './Reducers/Statics';
+
 import * as types from './actionTypes';
 
 const appReducer = combineReducers({
@@ -13,6 +15,7 @@ const appReducer = combineReducers({
   transactions,
   contacts,
   invoice,
+  statics,
 });
 
 let composeEnhancers = compose;

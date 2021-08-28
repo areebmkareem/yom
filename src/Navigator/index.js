@@ -23,6 +23,7 @@ import CreateBill from '../Components/CreateBill';
 import InvoiceList from '../Components/InvoiceList';
 import InvoiceDetails from '../Components/InvoiceDetails';
 import SendToUsers from '../Components/SendToUsers';
+import Statics from '../Components/Statics';
 const PublicStack = createStackNavigator();
 const PrivateStack = createStackNavigator();
 const RootStack = createStackNavigator();
@@ -57,6 +58,24 @@ const PrivateRoutes = () => (
     <PrivateStack.Screen
       name="InvoiceList"
       component={InvoiceList}
+      options={{
+        headerTitle: false,
+        headerTitle: 'Invoices',
+        headerTitleStyle: {
+          fontWeight: '700',
+          fontSize: normalize(4),
+        },
+        headerStyle: {
+          elevation: 0, // remove shadow on Android
+          shadowOpacity: 0, // remove shadow on iOS
+        },
+        headerRight: () => <HeaderRightButton />,
+        headerLeft: () => <HeaderLeftButton />,
+      }}
+    />
+    <PrivateStack.Screen
+      name="Statics"
+      component={Statics}
       options={{
         headerTitle: false,
         headerTitle: 'Invoices',
